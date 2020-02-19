@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="32488fb3-8971-4d31-8f16-54b6eb0fa138" >
+		<http:listener-connection host="0.0.0.0" port="8081" />
+	</http:listener-config>
+	<flow name="gitbashFlow" doc:id="bcb470a0-cc9c-45f4-b9a6-48cb5fa54d10" >
+		<http:listener doc:name="Listener" doc:id="c0ab25b5-2f5a-4e94-8c1a-73d521092e31" config-ref="HTTP_Listener_config" path="/db"/>
+		<ee:transform doc:name="Transform Message" doc:id="ead6eb84-7357-421e-a935-fb112108b92f" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+var myJson = {
+  a: avg([1, 1000]),
+  b: avg([1, 2, 3])
+}
+output application/json
+---
+myJson]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+</mule>
